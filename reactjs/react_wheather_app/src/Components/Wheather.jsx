@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Wheather.css'
 import search_icon from '../assets/search.png';
 import clear_icon from '../assets/clear.png';
@@ -8,8 +8,26 @@ import humidity_icon from '../assets/humidity.png';
 import rain_icon from '../assets/rain.png';
 import snow_icon from '../assets/snow.png';
 import wind_icon from '../assets/wind.png';
+import { use } from 'react';
 
 const Wheather = () => {
+
+    const search = async(city)=>{
+        try {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${import.meta.env.VITE_APP_ID}`;
+            
+            const res = await fetch(url);
+            const data = await res.json();
+            console.log(data);
+        } catch (error) {
+            
+        }
+    }
+
+    useEffect(() => {
+        search('London');
+    }, [])
+
   return (
    
     <div className="wheather">
