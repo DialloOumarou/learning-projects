@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/Users');
 const multer = require('multer');
+const fs = require('fs');
 
 //image upload
 var storage = multer.diskStorage({
@@ -28,26 +29,55 @@ router.post('/add',upload,(req,res)=>{
         phone: req.body.phone,
         image: req.file.filename
     });
-    user.save((error)=>{
-        if(error){
-           res.json({message: error.message,type:'danger'});  
-        }else{
-            req.session.message = {
-                type: 'success',
-                message: 'User added successfully'
-            };
-            res.redirect('/');
-        }
+    user.save()
+    .then(() => {
+        req.session.message = {
+            type: 'success',
+            message: 'User added successfully'
+        };
+        res.redirect('/');
+    })
+    .catch(error => {
+        res.json({ message: error.message, type: 'danger' });
     });
+
 });
 
 
-router.get('/',(req,res)=>{
-    res.render('index',{title:'Home Page'});
+//get all users from database
+router.get('/', async (req, res) => {
+    try {
+        const users = await User.find().exec();
+        res.render('index', { title: 'Home Page', users: users });
+    } catch (err) {
+        res.json({ message: err.message, type: 'danger' });
+    }
 });
 
-router.get('/add',(req,res)=>{
-    res.render('add_users',{title:'Add Users'});
+router.get('/add', (req, res) => {
+    res.render('add_users', { title: 'Add Users' });
+});
+
+//edit a user
+router.get('/edit/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const user = await User.findById(id).exec();
+        if (user == null) {
+            res.redirect('/');
+        } else {
+            res.render('edit_users', { title: 'Edit User', user: user });
+        }
+    } catch (err) {
+        res.redirect('/');
+    }
+});
+
+//update a user
+router.post('/update/:id', upload, async (req, res) => {
+    const id = req.params.id;
+    let new_image = '';
+   
 });
 
 module.exports = router;
