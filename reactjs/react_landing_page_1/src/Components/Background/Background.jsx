@@ -9,24 +9,24 @@ import image3 from '../../assets/image3.png'
 const Background = ({playStatus,heroCount}) => {
   if(playStatus){
     return(
-      <video className='background' autoPlay loop muted>
+      <video className='background fade-in' autoPlay loop muted>
         <source src={video1} type='video/mp4'/>
       </video>
     );
   }
   else if(heroCount === 0){
     return(
-      <img className='background' src={image1} />
+      <img className='background fade-in' src={image1} />
     );
   }
   else if(heroCount === 1){
     return(
-      <img className='background' src={image2} />
+      <img className='background fade-in' src={image2} />
     );
   }
   else if(heroCount === 2){
     return(
-      <img className='background' src={image3} />
+      <img className='background fade-in' src={image3} />
     );
   }
 
