@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import { IoMoon } from "react-icons/io5";
 import { FaSun } from "react-icons/fa"; // Use a valid icon from the 'fa' set
+import { useProductStore } from "../store/product";
 
 const Navbar = () => {
 
   const {colorMode,toggleColorMode} = useColorMode();
+  const {products} = useProductStore();
 
   return (
     <div>
-      <Container maxW={"1114px"} px={4}>
+      <Container maxW={"1114px"} px={4} >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"} 
               flexDir={{
                 base:"column",
